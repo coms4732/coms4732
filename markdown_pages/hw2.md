@@ -189,7 +189,7 @@ You must submit your code and visualizations outlined above for **2 different sc
 
 ## Hints
 - You can use LLMs to implement any visualization code you wish.
-- If you would like to visually debug using the staff example, the images can be found here: [north1.jpg](/hws/hw2/north1.jpg) and [north2.jpg](/hws/hw2/north2.jpg) 
+- If you would like to visually debug using the staff example, the images can be found here: [img1.jpg](/hws/hw2/north1.jpg) and [img2.jpg](/hws/hw2/north2.jpg) 
 - Some hyperparameters (such as the RANSAC NNDR threshold) may need to be tuned for each image pair. For references, the staff solution for the example provided in this webpage used the following:
 
 | Hyperparameter | Value | Description |
