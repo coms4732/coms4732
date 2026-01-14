@@ -161,6 +161,8 @@ You will implement the latter: for your set of images, display the NNDR histogra
 
 - Use 4-point RANSAC as described in class to compute robust homography estimates. Using your best homography estimate, visualize the inliers among the homography applied on all points. 
 
+![Step 5 Deliverable](/hws/hw2/step5_deliverable.png)
+
 **Deliverables:** Show the inliers associated with the best homography found with RANSAC.
 
 ## Bells & Whistles (Optional)
