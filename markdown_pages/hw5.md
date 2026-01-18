@@ -28,6 +28,7 @@ border-radius: 5px;
 }
 .image-container {
 display: flex;
+flex-wrap: wrap;
 justify-content: center;
 align-items: flex-start;
 gap: 20px;
@@ -35,6 +36,7 @@ gap: 20px;
 
 .image-container {
 display: flex;
+flex-wrap: wrap;
 justify-content: center;
 align-items: flex-start;
 gap: 20px;
@@ -44,8 +46,9 @@ gap: 20px;
 display: flex;
 flex-direction: column;
 align-items: center;
-width: 40%;
-max-width: 200px;
+width: 14%;
+min-width: 75px;
+max-width: 100px;
 position: relative;
 padding: 20px;
 overflow: visible;
@@ -252,6 +255,7 @@ border-radius: 5px;
 }
 .image-container {
 display: flex;
+flex-wrap: wrap;
 justify-content: center;
 align-items: flex-start;
 gap: 20px;
@@ -262,7 +266,7 @@ display: flex;
 flex-direction: column;
 align-items: center;
 width: 30%;
-max-width: 200px;
+max-width: 100px;
 }
 
 .image-container img {
@@ -294,6 +298,7 @@ border-radius: 5px;
 }
 .image-container {
 display: flex;
+flex-wrap: wrap;
 justify-content: center;
 align-items: flex-start;
 gap: 20px;
@@ -301,6 +306,7 @@ gap: 20px;
 
 .image-container {
 display: flex;
+flex-wrap: wrap;
 justify-content: center;
 align-items: flex-start;
 gap: 20px;
@@ -310,8 +316,9 @@ gap: 20px;
 display: flex;
 flex-direction: column;
 align-items: center;
-width: 40%;
-max-width: 200px;
+width: 14%;
+min-width: 75px;
+max-width: 100px;
 position: relative;
 padding: 20px;
 overflow: visible;
@@ -586,6 +593,8 @@ Fire</b></p>
 # HW5 Part A: The Power of Diffusion Models!
 <a href="../../">COMS4732: Computer Vision 2</a>
 
+[Jump to part B](#hw5-part-b-flow-matching-from-scratch)
+
 <h2 style="text-align: center">
 <b style="color: red;">Due: TBD</b>
 </h2>
@@ -607,9 +616,9 @@ notebook</a>.</p>
 models, all deliverables should be completed in the notebook. You will
 still submit a webpage with your results.</p>
 
-<p style="color: #CC0000; display: inline;"><b>START EARLY!</b></p><span style="margin-left: 5px;"> This project, in many ways, will be the most difficult project this semester.</span>
+<p style="color: red; display: inline;"><b>START EARLY!</b></p><span style="margin-left: 5px;"> This assignment, in many ways, will be the most difficult project this semester.</span>
 
-#  Part 0: Setup
+##  Part 0: Setup
 ### Gaining Access to DeepFloyd
 <p class="text">
 We are going to use the <a
@@ -651,7 +660,7 @@ Please note that both clusters have daily usage limits, so if you're unable to u
 but this is a predefined set of prompts and lacks flexibility. We want to see your creativity!
 </p>
 
-<b>Deliverables </b>
+<b><span style="color: red;">Deliverables</span></b>
 
 <ul>
 <li>Come up with some interesting text prompts and generate their embeddings.</li>
@@ -663,11 +672,11 @@ different <code>num_inference_steps</code> values.</li>
 same seed all subsequent parts.</li>
 </ul>
 
-**Hints**
+**<span style="color: green;">Hints</span>**
 
 * Since we ask you to generate [visual anagrams](https://dangeng.github.io/visual_anagrams/) and [hybrid images](https://dangeng.github.io/factorized_diffusion/), you may want to include several text pairs prompting them beforehand.
 
-# Part 1: Sampling Loops
+## Part 1: Sampling Loops
 In this part of the problem set, you will write your own "sampling loops"
 that use the pretrained DeepFloyd denoisers. These should produce high
 quality images such as the ones generated above.
@@ -748,14 +757,14 @@ and display the results. You should get progressively more noisy
 images.
 </p>
 <p class="text">
-<b>Deliverables</b>
+<b><span style="color: red;">Deliverables</span></b>
 </p>
 <ul>
 <li>Implement the <code>noisy_im = forward(im, t)</code> function</li>
 <li> Show the Campanile at noise level [250, 500, 750].</li>
 </ul>
 <p class="text">
-<b>Hints</b>
+<b><span style="color: green;">Hints</span></b>
 </p>
 <ul>
 <li>The <code>torch.randn_like</code> function is helpful for
@@ -793,13 +802,13 @@ Again, take noisy images for timesteps [250, 500, 750], but use
 Getting good results should be quite difficult, if not impossible.
 </p>
 
-<b> Deliverables </b>
+<b><span style="color: red;">Deliverables</span></b>
 <ul>
 <li>For each of the 3 noisy Campanile images from the previous part, show
 your best Gaussian-denoised version side by side.</li>
 </ul>
 
-<b>Hint:</b>
+<b><span style="color: green;">Hint:</span></b>
 <ul>
 <li> <code>torchvision.transforms.functional.gaussian_blur</code> is
 useful. Here is the <a
@@ -859,7 +868,7 @@ prompt <code>"a high quality photo"</code> for you to use. Later on, you can
 use your own text prompts.
 </p>
 <p class="text">
-<b>Deliverables</b>
+<b><span style="color: red;">Deliverables</span></b>
 </p>
 <ul>
 <li>For the 3 noisy images from 1.2 (t = [250, 500, 750]):
@@ -877,7 +886,7 @@ of the original image</li></ul>
 </ul>
 
 <p class="text">
-<b>Hints</b>
+<b><span style="color: green;">Hints</span></b>
 </p>
 <ul>
 <li>When removing the noise, you can't simply subtract the noise
@@ -1060,7 +1069,7 @@ blurring.
 </p>
 
 <p class="text">
-<b>Deliverables</b>
+<b><span style="color: red;">Deliverables</span></b>
 </p>
 Using <code>i_start = 10</code>:
 <ul>
@@ -1081,7 +1090,7 @@ in
 part 1.2.</li>
 </ul>
 
-<b>Hints</b>
+<b><span style="color: green;">Hints</span></b>
 <ul>
 <li>Remember, the unet will output a tensor of shape (1, 6, 64, 64).
 This is because DeepFloyd was trained to predict the noise as well as
@@ -1153,13 +1162,13 @@ Please
 do this, and show 5 results of the prompt<code>"a high quality photo"</code>.
 </p>
 <p class="text">
-<b>Deliverables</b>
+<b><span style="color: red;">Deliverables</span></b>
 <ul>
 <li>Show 5 sampled images.</li>
 </ul>
 </p>
 <p class="text">
-<b>Hints</b>
+<b><span style="color: green;">Hints</span></b>
 </p>
 <ul>
 <li>Use <code>torch.randn</code> to make the noise.</li>
@@ -1235,7 +1244,7 @@ guidance for CFG. In the later part, you should always use
 null prompt for unconditional guidance.
 </p>
 <p class="text">
-<b>Deliverables</b>
+<b><span style="color: red;">Deliverables</span></b>
 <ul>
 <li>Implement the <code>iterative_denoise_cfg</code> function</li>
 <li>Show 5 images of <code>"a high quality photo"</code> with a CFG
@@ -1245,7 +1254,7 @@ stronger conditions in part 1.7 - part 1.9.</li>
 </ul>
 </p>
 <p class="text">
-<b>Hints</b>
+<b><span style="color: green;">Hints</span></b>
 </p>
 <ul>
 <li>You will need to run the UNet twice, once for the conditional prompt
@@ -1281,7 +1290,7 @@ section.</li>
 </div>
 
 ### 1.7 Image-to-image Translation
-<b style="color: #CC0000;">Note: You should use CFG from this point forward.</b> 
+<b style="color: green;">Note: You should use CFG from this point forward.</b> 
 <p class="text">
 In part 1.4, we take a real image, add noise to it, and then denoise.
 This
@@ -1310,7 +1319,7 @@ the
 starting index. You should see a series of "edits" to the original
 image,
 gradually matching the original image closer and closer.</p>
-<b> Deliverables </b>
+<b><span style="color: red;">Deliverables</span></b>
 <ul>
 <li>Edits of the Campanile image, using the given prompt at noise levels [1,
 3, 5, 7, 10, 20] with the conditional text prompt
@@ -1318,7 +1327,7 @@ gradually matching the original image closer and closer.</p>
 <li>Edits of 2 of your own test images, using the same procedure.</li>
 </ul>
 <p class="text">
-Hints
+<b><span style="color: green;">Hints</span></b>
 <ul>
 <li>You should have a range of images, gradually looking more like the
 original image</li>
@@ -1382,7 +1391,7 @@ out the examples on <a href="https://sde-image-editing.github.io/">this
 project page</a>.
 </p>
 <p>
-<b>Deliverables</b>
+<b><span style="color: red;">Deliverables</span></b>
 <ul>
 <li>1 image from the web of your choice, edited using the above method
 for noise levels [1, 3, 5, 7, 10, 20] (and whatever additional noise
@@ -1392,7 +1401,7 @@ levels [1, 3, 5, 7, 10, 20] (and whatever additional noise levels
 you want)</li>
 </ul>
 
-<b>Hints</b>
+<b><span style="color: green;">Hints</span></b>
 <ul>
 <li>We provide you with preprocessing code to convert web images to the format expected by DeepFloyd</li>
 <li>Unfortunately, the drawing interface is hardcoded to be 300x600
@@ -1491,7 +1500,7 @@ Please implement this below, and edit the picture to inpaint the top of
 the Campanile.
 </p>
 <p class="text">
-<b>Deliverables</b>
+<b><span style="color: red;">Deliverables</span></b>
 
 <ul>
 <li>A properly implemented <code>inpaint</code> function</li>
@@ -1506,7 +1515,7 @@ paper</a> for inspiration</li>
 </ul>
 </p>
 <p class="text">
-<b>Hints</b>
+<b><span style="color: green;">Hints</span></b>
 </p>
 <ul>
 <li>Reuse the <code>forward</code> function you implemented earlier to
@@ -1547,14 +1556,14 @@ projection with a text prompt. This is no longer pure
 language. This is simply a matter of changing the prompt from
 <code>"a high quality photo"</code> to any of your prompt!</p>
 
-<b>Deliverables</b>
+<b><span style="color: red;">Deliverables</span></b>
 <ul>
 <li>Edits of the Campanile, using the given prompt at noise levels [1,
 3, 5, 7, 10, 20]</li>
 <li>Edits of 2 of your own test images, using the same procedure</li>
 </ul>
 
-<b></b>Hints</b>
+<b><span style="color: green;">Hints</span></b>
 <ul>
 <li>The images should gradually look more like original image, but also
 look like the text prompt.</li>
@@ -1631,14 +1640,14 @@ text prompt embeddings. And our final noise estimate is $\epsilon$. Please
 implement the above algorithm and show example of an illusion.
 </p>
 
-<b>Deliverables</b>
+<b><span style="color: red;">Deliverables</span></b>
 <ul>
 <li>Correctly implemented <code>visual_anagrams</code> function</li>
 <li>2 illusions of your choice that change appearance when you flip
 it upside down (feel free to take inspirations from this <a href="https://dangeng.github.io/visual_anagrams/">page</a>).</li>
 </ul>
 
-<b>Hints</b>
+<b><span style="color: green;">Hints</span></b>
 <ul>
 <li>You may have to run multiple times to get a really good result for
 the same reasons as above.</li>
@@ -1687,13 +1696,13 @@ same reasons as above). We recommend that you use a gaussian blur of
 kernel size 33 and sigma 2.
 </p>
 
-<b>Deliverables</b>
+<b><span style="color: red;">Deliverables</span></b>
 <ul>
 <li>Correctly implemented <code>make_hybrids</code> function</li>
 <li>2 hybrid images of your choosing (feel free to take inspirations from this <a href="https://dangeng.github.io/factorized_diffusion/">page</a>).</li>
 </ul>
 
-<b>Hints</b>
+<b><span style="color: green;">Hints</span></b>
 <ul>
 <li>use <code>torchvision.transforms.functional.gaussian_blur</code> </li>
 <li>You may have to run multiple times to get a really good result for the
@@ -1708,8 +1717,7 @@ alt="Hybrid image of a skull and a waterfall">
 </div>
 </div>
 
-#  Part 2: Bells & Whistles 
-<b>Required for CS280A students only:</b>
+###  Bells & Whistles (Optional)
 <ul>
 <li><b>More visual anagrams!</b> Visual anagrams in part 1.8 are created by flipping images
 upside down. However, there are much more transformations that also create visual
@@ -1723,7 +1731,7 @@ logo or your drawing may be a good idea.</li>
 <li><b>Your own ideas</b>: Be creative!</li>
 </ul>
 
-# Deliverable Checklist
+### <span style="color: red;">Deliverable Checklist</span>
 <ul>
 <li>Make sure that your website and submission include <b>all the deliverables</b> in each section above.</li>
 <li>Submit your <b>PDF</b> and <b>code</b> to corresponding assignments on Gradescope.</li>
@@ -1766,7 +1774,6 @@ onmouseout="handleMouseOut(this)">
 </div>
 
 # HW5 Part B: Flow Matching from Scratch!
-<a href="../../">COMS4732: Computer Vision 2</a>
 ### For this part, you need to submit your code and website PDF, and also your web url to class gallery via this <a href="https://forms.gle/gLQhNCyBUaCACt7W6">Google Form</a>.
 <h2 style="text-align: center">
 <b style="color: red;">Due: TBD</b>
@@ -1823,7 +1830,7 @@ The structure of your training code will be very similar to this one.
 
 <!-- <p>Note: this is an updated version of <a href="https://cal-cs180.github.io/fa24/hw/proj5/">CS180's Project 5</a> part B with flow matching instead of DDPM diffusion. For the DDPM version, please see <a href="https://cal-cs180.github.io/fa24/hw/proj5/partb.html">here</a>.</p> -->
 
-# Part 1: Training a Single-Step Denoising UNet
+## Part 1: Training a Single-Step Denoising UNet
 <p class="text">
 Let's warmup by building a simple one-step denoiser. Given a noisy image
 $z$, we
@@ -1832,7 +1839,7 @@ image $x$. To do so, we can optimize over an L2 loss:
 $$L = \mathbb{E}_{z,x} \|D_{\theta}(z) - x\|^2 \tag{B.1}$$
 </p>
 
-##  1.1 Implementing the UNet
+###  1.1 Implementing the UNet
 In this project, we implement the denoiser as a <a
 href="https://arxiv.org/abs/1505.04597"> UNet</a>. It consists of a
 few downsampling and upsampling blocks with skip connections.
@@ -1852,7 +1859,7 @@ style="display: block; margin-left: auto; margin-right: auto" />
 <p class="text">Figure 2: Standard UNet Operations</p>
 </div>
 
-<br\>
+<!-- <br><br> -->
 
 where:
 <ul>
@@ -1905,7 +1912,7 @@ UpConv</tt></b>.</li>
 </ul> -->
 </p>
 
-##  1.2 Using the UNet to Train a Denoiser
+###  1.2 Using the UNet to Train a Denoiser
 Recall from equation 1 that we aim to solve the following denoising
 problem:
 
@@ -1928,7 +1935,7 @@ Visualize the different noising processes over $\sigma = [0.0, 0.2, 0.4,
 
 You should see noisier images as $\sigma$ increases.
 
-### Deliverable
+### <span style="color: red;">Deliverable</span>
 <ul>
 <li>A visualization of the noising process using $\sigma = [0.0,
 0.2, 0.4, 0.5, 0.6, 0.8, 1.0]$.</li>
@@ -1939,7 +1946,7 @@ style="display: block; margin-left: auto; margin-right: auto" />
 <p class="text">Figure 3: Varying levels of noise on MNIST digits</p>
 </div> -->
 
-## 1.2.1 Training
+### 1.2.1 Training
 <p class="text">
 Now, we will train the model to perform denoising.
 </p>
@@ -1995,7 +2002,7 @@ style="display: block; margin-left: auto; margin-right: auto" />
 epochs of training</p>
 </div>
 
-### Deliverables
+### <span style="color: red;">Deliverables</span>
 <ul>
 <li>A training loss curve plot every few iterations during the whole
 training process of $\sigma = 0.5$.</li>
@@ -2003,7 +2010,7 @@ training process of $\sigma = 0.5$.</li>
 (staff solution takes ~3 minutes for 5 epochs on a Colab T4 GPU).</li>
 </ul>
 
-## 1.2.2 Out-of-Distribution Testing
+### 1.2.2 Out-of-Distribution Testing
 
 <p class="text">
 Our denoiser was trained on MNIST digits noised with $\sigma = 0.5$. Let's
@@ -2020,7 +2027,7 @@ style="max-width: 90%; height: auto; display: block; margin-left: auto; margin-r
 <p class="text">Figure 7: Results on digits from the test set with varying
 noise levels.</p>
 </div> -->
-### Deliverables
+### <span style="color: red;">Deliverables</span>
 <ul>
 <li>Sample results on the test set with out-of-distribution noise levels
 after the model is trained. Keep the same image and
@@ -2034,7 +2041,7 @@ vary $\sigma = [0.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0]$.</li>
 
 <p>Sample from the denoiser that was trained to denoise pure noise. What patterns do you observe in the generated outputs? What relationship, if any, do these outputs have with the training images (e.g., digits 0–9)? Why might this be happening?</p>
 
-### Deliverables
+### <span style="color: red;">Deliverables</span>
 <ul>
 <li>A training loss curve plot every few iterations during the whole
 training process that denoises pure noise.</li>
@@ -2042,7 +2049,7 @@ training process that denoises pure noise.</li>
 <li>A brief description of the patterns observed in the generated outputs and explanations for why they may exist.</li>
 </ul>
 
-<b>Hint</b>
+<b><span style="color: green;">Hint</span></b>
 <ul>
 <li>
 For the last question, recall that with an MSE loss, the model learns to predict the point that
@@ -2063,7 +2070,7 @@ This consists of: <ul>
 </li>
 </ul>
 
-# Part 2: Training a Flow Matching Model
+## Part 2: Training a Flow Matching Model
 We just saw that one-step denoising does not work well for generative tasks. Instead, we need to iteratively denoise the image, and we will do so with <a href="https://arxiv.org/abs/2210.02747">flow matching</a>. 
 Here, we will iteratively denoise an image by training a UNet model to predict the `flow' from our noisy data to clean data.
 
@@ -2087,7 +2094,7 @@ This is a vector field describing the position of a point $x_t$ at time $t$ rela
 L = \mathbb{E}_{x_0 \sim p_0(x_0), x_1 \sim p_1(x_1), t \sim U[0, 1]} \|(x_1-x_0) - u_\theta(x_t, t)\|^2. \tag{B.5}
 \end{equation}</p>
 
-## 2.1 Adding Time Conditioning to UNet
+### 2.1 Adding Time Conditioning to UNet
 We need a way to inject scalar $t$ into our UNet model to condition it. There are many ways to do this. Here is what we suggest:
 
 <div style="text-align: center;">
@@ -2137,7 +2144,7 @@ up1 = up1 * t2
 </code></pre>
 </div>
 
-## 2.2 Training the UNet
+### 2.2 Training the UNet
 Training our time-conditioned UNet $u_\theta(x_t, t)$ is now pretty easy. Basically, we pick a random image $x_1$
 from the training set, a random timestep $t$, add noise to $x_1$ to get $x_t$, and train the denoiser to predict the flow at $x_t$. We repeat this for different images and different timesteps until the model converges and we are happy.
 
@@ -2174,13 +2181,13 @@ recommended hidden dimension <code>D = 64</code>. Follow the diagram and pseudoc
 <p class="text">Figure 10: Time-Conditioned UNet training loss curve</p>
 </div> -->
 
-### Deliverable
+### <span style="color: red;">Deliverable</span>
 <ul>
 <li>A training loss curve plot for the time-conditioned UNet over the whole training process. </li>
 </ul>
 
 
-## 2.3 Sampling from the UNet
+### 2.3 Sampling from the UNet
 We can now use our UNet for iterative denoising using the algorithm below! The results would not be perfect, but legible digits should emerge
 <br>
 <br>
@@ -2244,14 +2251,14 @@ style="display: block; margin-left: 0;">
 </div>
 </div> -->
 
-### Deliverables
+### <span style="color: red;">Deliverables</span>
 <ul>
 <li>Sampling results from the time-conditioned UNet for 1, 5, and 10 epochs. The results should not be perfect, but reasonably good.</li>
 <li>(Optional) Check the Bells and Whistles if you want to make it better!</li>
 </ul>
 
 
-## 2.4 Adding Class-Conditioning to UNet
+### 2.4 Adding Class-Conditioning to UNet
 To make the results better and give us more control for image generation, we can also optionally condition our UNet on the class of the digit 0-9. This will require adding 2 more <b><tt>FCBlock</tt></b>s to our UNet but, we suggest that for class-conditioning vector $c$, you make it a one-hot vector instead of a single scalar. 
 
 Because we still want our UNet to work without it being conditioned on the class (recall the classifer-free guidance you implemented in part a), we implement dropout where 10% of the time ($p_{\text{uncond}}= 0.1$) we drop the class conditioning vector $c$ by setting it to 0.
@@ -2282,7 +2289,7 @@ up1 = c2 * up1 + t2
 </code></pre>
 </div>
 
-## 2.5 Training the UNet
+### 2.5 Training the UNet
 <p>Training for this section will be the same as time-only, with the only difference being the conditioning vector $c$ and doing unconditional generation periodically.</p>
 <br>
         
@@ -2293,7 +2300,7 @@ class="responsive-algo" />
 <p class="text">Algorithm B.3. Training class-conditioned UNet</p>
 </div>
     
-### Deliverable
+#### <span style="color: red;">Deliverable</span>
 <ul>
 <li>A training loss curve plot for the class-conditioned UNet over the whole training process. </li>
 </ul>
@@ -2376,7 +2383,7 @@ style="display: block; margin-left: 0;">
 </div> -->
 
 
-### Deliverables
+### <span style="color: red;">Deliverables</span>
 <ul>
 <li>Sampling results from the class-conditioned UNet for 1, 5, and 10 epochs. Class-conditioning lets us converge faster, hence why we only train for 10 epochs. Generate 4 instances of each digit as shown above.
 </li>
@@ -2384,7 +2391,7 @@ style="display: block; margin-left: 0;">
 learning rate scheduler. Show your visualization after training without the scheduler and provide a description of what you did to compensate for the loss of the scheduler.</li>
 </ul>
 
-#  Part 3: Bells & Whistles (Optional)
+###  Part 3: Bells & Whistles (Optional)
 <!-- <b>Required for CS280A students only:</b> -->
 <ul>
 <li><b>A better time-conditioned only UNet: </b> Our time-conditioning only UNet in part 2.3 is actually far from perfect. Its result is way worse than the UNet conditioned by both time and class.
@@ -2394,7 +2401,7 @@ We can definitively make it better! Show a better visualization image for the ti
 <li><b>Your own ideas</b>: Be creative! This UNet can generate images more than digits! You can try it on <a href="http://ufldl.stanford.edu/housenumbers/">SVHN</a> (still digits, but more fancy!), <a href="https://github.com/zalandoresearch/fashion-mnist">Fashion-MNIST</a> (not digits, but still grayscale!), or <a href="https://www.cs.toronto.edu/~kriz/cifar.html">CIFAR10</a>!</li>
 </ul>
 
-# Deliverable Checklist
+### <span style="color: red;">Deliverable Checklist</span>
 <ul>
 <li>Make sure that your website and submission include <b>all the deliverables</b> in each section above.</li>
 <li>Submit your <b>PDF</b> and <b>code</b> to corresponding assignments on Gradescope.</li>

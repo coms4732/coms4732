@@ -107,24 +107,25 @@ toc: true
 
 ## Background
 
-This assignment will involve creating a system for automatically detecting corresponding features in 2 images, as well as learning how to read and implement a research paper.
+This assignment will involve creating a system for automatically detecting corresponding features in 2 images.
 
-We will follow the paper ["Multi-Image Matching using Multi-Scale Oriented Patches"](https://cal-cs180.github.io/fa25/hw/proj3/Papers/MOPS.pdf) by Brown et al. but with several simplifications. Read the paper first and make sure you understand it, then implement the algorithm.
+We will loosely follow the paper ["Multi-Image Matching using Multi-Scale Oriented Patches"](https://cal-cs180.github.io/fa25/hw/proj3/Papers/MOPS.pdf) by Brown et al. but with several simplifications. Read the paper first and make sure you understand it at a high level, then we will implement parts of the algorithm. Note: we will implement a simpler version of Adaptive Non-Maximal Suppression (ANMS) instead of the version described in the paper - no worries if you don't understand it fully.
 
 ## Step 0: Taking photos (0 points, required)
 
-Take your 2 photos as you would a panoramic, keeping in mind to keep your camera level, only rotating your camera but not translating it.
+Take your 2 photos as you would a panoramic, remembering to keep your camera level, only rotating your camera but not translating it.
 
 ## Step 1: Harris Corner Detection (5 points)
 
-- Start with Harris Interest Point Detector (Section 2). We won't worry about multi-scale – just do a single scale. Also, don't worry about sub-pixel accuracy. Re-implementing Harris is a thankless task – so you can use our sample code: [harris.py](harris.py).
+- Start with Harris Interest Point Detector (Section 2). We won't worry about multi-scale – just do a single scale. Also, don't worry about sub-pixel accuracy. Re-implementing Harris is a thankless task – so you can use our sample code: [harris.py](/hws/hw1/starter_code.txt).
 
 ![Step 1 Deliverable](/hws/hw2/step1_deliverable.png)
 
 **Deliverables:** Show your 2 images, as-is, side-by-side. Also, show detected corners overlaid on your set of images side-by-side.
-## Step 2: Adaptive Non-Maximal Suppression (ANMS) (15 points)
+## Step 2: Non-Maximal Suppression (NMS) (15 points)
 
-- Implement Adaptive Non-Maximal Suppression (ANMS, Section 3). Include in your submission a figure of the chosen corners overlaid on the image. This section has multiple moving parts; you may need to read it a few times. You may want to skip this step and come back to it; just choose a random set of corners instead in the meantime.
+Instead of the *Adaptive* Non-Maximal Suppression (ANMS) described in the paper, we will implement a simpler version of Non-Maximal Suppression (NMS) where we simply discard all corners that are not the local maximum in window with our choice of size. Report the window size you used.
+
 
 ![Step 2 Deliverable](/hws/hw2/step2_deliverable.png)
 
@@ -159,17 +160,23 @@ You will implement the latter: for your set of images, display the NNDR histogra
    1. the first column should be the feature descriptor for img1's feature.
    2. the second column should be the 1NN feature descriptor from img2.
    3. the third column should be the 2NN feature descriptor from img2.
-3. Color-code the matched features across both images and display them side-by-side. Also, put a number next to each feature to indicate the match index.
+3. Visualize the matches using one of the 2 options:
+   - Option 1: Color-code the matched features across both images and display them side-by-side. Also, put a number next to each feature to indicate the match index.
+   - Option 2: Draw green lines between matched features across both images side-by-side, and put red dots on the unmatched features.
 
-## Step 5: RANSAC to estimate the homography (40 points)
+<!-- ## Step 5: RANSAC to estimate the homography (40 points)
 
 - Use 4-point RANSAC as described in class to compute robust homography estimates. Using your best homography estimate, visualize the inliers among the homography applied on all points. 
 
 ![Step 5 Deliverable](/hws/hw2/step5_deliverable.png)
 
-**Deliverables:** Show the inliers associated with the best homography found with RANSAC.
+**Deliverables:** Show the inliers associated with the best homography found with RANSAC. -->
 
 ## Bells & Whistles (Optional)
+
+- **Adaptive Non-Maximal Suppression (ANMS):** Implement Adaptive Non-Maximal Suppression (ANMS) as described in the paper.
+
+- **RANSAC to estimate the homography:** Implement RANSAC to estimate the homography as described in the paper. This will yield better feature matches since they will have been geometrically verified by finding all the inliers according to the homography.
 
 - **Image Panoramic:** Create a panoramic image from the 2 images by stitching them together using the homography and blending the images together.
 
@@ -178,6 +185,8 @@ You will implement the latter: for your set of images, display the NNDR histogra
 - **Support for 3+ images:** Implement support for 3+ images by using the homography to stitch together more than 2 images.
 
 ## Deliverables
+
+Submit your code, input images, and html webpage code, and hosted webpage to Gradescope.
 
 You must submit your code and visualizations outlined above for **2 different scenes / pairs of images**. You *cannot* use the example provided by the staff. An example for one scene is shown below:
 
@@ -194,9 +203,10 @@ You must submit your code and visualizations outlined above for **2 different sc
 </div>
 
 ## Hints
-- You can use LLMs to implement any visualization code you wish.
+- You are *encouraged to use LLMs* to implement any visualization code you wish. **Visualization code only**.
 - If you would like to visually debug using the staff example, the images can be found here: [img1.jpg](/hws/hw2/north1.jpg) and [img2.jpg](/hws/hw2/north2.jpg) 
-- Some hyperparameters (such as the RANSAC NNDR threshold) may need to be tuned for each image pair. For references, the staff solution for the example provided in this webpage used the following:
+
+<!-- - Some hyperparameters (such as the RANSAC NNDR threshold) may need to be tuned for each image pair. For references, the staff solution for the example provided in this webpage used the following:
 
 | Hyperparameter | Value | Description |
 |----------------|---------------|-------------|
@@ -207,7 +217,7 @@ You must submit your code and visualizations outlined above for **2 different sc
 | `feature_matching_ratio_threshold` | 0.85 | NNDR (Nearest Neighbor Distance Ratio) threshold for feature matching |
 | `ransac_s` | 4 | Number of correspondences to sample per RANSAC iteration |
 | `ransac_epsilon` | 1.0 | Distance threshold (in pixels) for RANSAC inlier classification |
-| `ransac_num_iters` | 15000 | Number of iterations to run RANSAC |
+| `ransac_num_iters` | 15000 | Number of iterations to run RANSAC | -->
 
 ## Acknowledgements
 

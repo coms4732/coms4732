@@ -26,12 +26,16 @@ mathjax: true
 # Neural Radiance Fields!
 
 ## <span style="color: red;">Due Date: TBD</span>
-**START EARLY!** This, along with HW5, are by far the most difficult assignments this semester.
+<span style="color: red;">**START EARLY!**</span> This, along with HW5, are by far the most difficult assignments this semester.
 
 **Note on compute requirements:** We're using PyTorch to implement neural networks with GPU acceleration. If you have an M-series Mac (M1/M2/M3), you should be able to run everything locally using the [MPS backend](https://pytorch.org/docs/stable/notes/mps.html). For older or less powerful hardware, we recommend using GPUs from [Colab](https://colab.research.google.com/). Colab Pro is now [free](https://colab.research.google.com/signup) for students.
 
----
+### Overview
 
+In HW2, we used a simple feature matching procedure to find correspondences between two images. In HW3, we did simple structure from motion (SfM) to estimate the 3D camera poses for 2 images. In this homework, you will use the outputs of an off-the-shelf SfM pipeline to build a NeRF of your own object.
+
+---
+<!-- 
 # Part 0: Calibrating Your Camera and Capturing a 3D Scan
 
 For the first part of the assignment, you will take a 3D scan of your own object which you will build a NeRF of later! To do this, we will use visual tracking targets called [ArUco tags](https://cs-courses.mines.edu/csci507/schedule/24/ArUco.pdf), which provide a way to reliably detect the same 3D keypoints across different images. There are 2 parts: 1) calibrating your camera parameters, and 2) using them to estimate pose. This part can be done entirely locally on your laptop, no need for a GPU. We will be using many helper functions from [OpenCV](https://opencv.org/), which you can install with `pip install opencv-python`.
@@ -141,7 +145,7 @@ while True:
     time.sleep(0.1)  # Wait to allow visualization to run
 ```
 
-**[Deliverables]** Include 2 screenshots of your cloud of cameras in Viser showing the camera frustums' poses and images.
+<span style="color: darkgreen;">**[Deliverables]**</span> Include 2 screenshots of your cloud of cameras in Viser showing the camera frustums' poses and images.
 
 ---
 
@@ -212,13 +216,13 @@ This dataset can then be loaded in Parts 1 and 2 the same way the provided lego 
 
 As a sanity check you can test your calibration implementation on our [calibration images](https://drive.google.com/drive/folders/1utiPjbEvnf87Eg4h-7WYVTXk2q6lI4rn?usp=sharing) and our [Lafufu dataset](https://drive.google.com/drive/folders/1aoLM-ay2ZjatVIEtFW7QtuNyjciwydsC?usp=sharing) which we used to train the NeRF example seen at the end of this assignment.
 
----
+--- -->
 
 # Part 1: Fit a Neural Field to a 2D Image
 
-From the lecture we know that we can use a Neural Radiance Field (NeRF) ($$ F: \{x, y, z, \theta, \phi\} \rightarrow \{r, g, b, \sigma\} $$) to represent a 3D space. But before jumping into 3D, let's first get familar with NeRF (and PyTorch) using a 2D example. In fact, since there is no concept of radiance in 2D, the Neural Radiance Field falls back to just a Neural Field ($$ F: \{u, v\} \rightarrow \{r, g, b\} $$) in 2D, in which $$ \{u, v\} $$ is the pixel coordinate. In this section, we will create a neural field that can represent a 2D image and optimize that neural field to fit this image. You can start from [this image](https://live.staticflickr.com/7492/15677707699_d9d67acf9d_b.jpg), but feel free to try out any other images.
+From lecture we know that we can use a Neural Radiance Field (NeRF) ($$ F: \{x, y, z, \theta, \phi\} \rightarrow \{r, g, b, \sigma\} $$) to represent a 3D space. But before jumping into 3D, let's first get familar with NeRF (and PyTorch) using a 2D example. In fact, since there is no concept of radiance in 2D, the Neural Radiance Field falls back to just a Neural Field ($$ F: \{u, v\} \rightarrow \{r, g, b\} $$) in 2D, in which $$ \{u, v\} $$ is the pixel coordinate. In this section, we will create a neural field that can represent a 2D image and optimize that neural field to fit this image. You can start from [this image](https://live.staticflickr.com/7492/15677707699_d9d67acf9d_b.jpg), but feel free to try out any other images.
 
-**[Impl: Network]** You would need to create an *Multilayer Perceptron (MLP)* network with *Sinusoidal Positional Encoding (PE)* that takes in the 2-dim pixel coordinates, and output the 3-dim pixel colors.
+<span style="color: red;">**[Impl: Network]**</span> You would need to create an *Multilayer Perceptron (MLP)* network with *Sinusoidal Positional Encoding (PE)* that takes in the 2-dim pixel coordinates, and output the 3-dim pixel colors.
 
 - Multilayer Perceptron (MLP): An MLP is simply a stack of non linear activations (e.g., [torch.nn.ReLU()](https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html) or [torch.nn.Sigmoid()](https://pytorch.org/docs/stable/generated/torch.nn.Sigmoid.html)) and fully connected layers ([torch.nn.Linear()](https://pytorch.org/docs/stable/generated/torch.nn.Linear.html)). For this part, you can start from building an MLP with the structure shown in the image below. Note that you would need to have a Sigmoid layer at the end of the MLP to constrain the network output be in the range of (0, 1), as a valid pixel color (don't forget to also normalize your image from [0, 255] to [0, 1] when you use it for supervision!). You can take a reference from [this tutorial](https://machinelearningmastery.com/building-multilayer-perceptron-models-in-pytorch/) on how to create an MLP in PyTorch.
 
@@ -230,18 +234,18 @@ PE(x) = \{x, \sin(2^0\pi x), \cos(2^0\pi x), \sin(2^1\pi x), \cos(2^1\pi x), ...
 $$ 
 in which $$ L $$ is the highest frequency level. You can start from $$ L=10 $$ that maps a 2 dimension coordinate to a 42 dimension vector.
 
-**[Impl: Dataloader]** If the image is with high resolution, it might be not feasible train the network with the all the pixels in every iteration due to the GPU memory limit. So you need to implement a dataloader that randomly sample $$ N $$ pixels at every iteration for training. The dataloader is expected to return both the $$ N\times2 $$ 2D coordinates and $$ N\times3 $$ colors of the pixels, which will serve as the input to your network, and the supervision target, respectively (essentially you have a batch size of $$ N $$). You would want to normalize both the coordinates (x = x / image_width, y = y / image_height) and the colors (rgbs = rgbs / 255.0) to make them within the range of [0, 1].
+<span style="color: red;">**[Impl: Dataloader]**</span> If the image is with high resolution, it might be not feasible train the network with the all the pixels in every iteration due to the GPU memory limit. So you need to implement a dataloader that randomly sample $$ N $$ pixels at every iteration for training. The dataloader is expected to return both the $$ N\times2 $$ 2D coordinates and $$ N\times3 $$ colors of the pixels, which will serve as the input to your network, and the supervision target, respectively (essentially you have a batch size of $$ N $$). You would want to normalize both the coordinates (x = x / image_width, y = y / image_height) and the colors (rgbs = rgbs / 255.0) to make them within the range of [0, 1].
 
-**[Impl: Loss Function, Optimizer, and Metric]** Now that you have the network (MLP) and the dataloader, you need to define the loss function and the optimizer before you can start training your network. You will use mean squared error loss (MSE) ([torch.nn.MSELoss](https://pytorch.org/docs/stable/generated/torch.nn.MSELoss.html)) between the predicted color and the groundtruth color. Train your network using Adam ([torch.optim.Adam](https://pytorch.org/docs/stable/generated/torch.optim.Adam.html)) with a learning rate of 1e-2. Run the training loop for 1000 to 3000 iterations with a batch size of 10k. For the metric, MSE is a good one but it is more common to use [Peak signal-to-noise ratio (PSNR)](https://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio) when it comes to measuring the reconstruction quality of a image. If the image is normalized to [0, 1], you can use the following equation to compute PSNR from MSE:
+<span style="color: red;">**[Impl: Loss Function, Optimizer, and Metric]**</span> Now that you have the network (MLP) and the dataloader, you need to define the loss function and the optimizer before you can start training your network. You will use mean squared error loss (MSE) ([torch.nn.MSELoss](https://pytorch.org/docs/stable/generated/torch.nn.MSELoss.html)) between the predicted color and the groundtruth color. Train your network using Adam ([torch.optim.Adam](https://pytorch.org/docs/stable/generated/torch.optim.Adam.html)) with a learning rate of 1e-2. Run the training loop for 1000 to 3000 iterations with a batch size of 10k. For the metric, MSE is a good one but it is more common to use [Peak signal-to-noise ratio (PSNR)](https://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio) when it comes to measuring the reconstruction quality of a image. If the image is normalized to [0, 1], you can use the following equation to compute PSNR from MSE:
 $$
 \text{PSNR} = 10 \cdot \log_{10}\left(\frac{1}{\text{MSE}}\right)
 $$
 
-**[Impl: Hyperparameter Tuning]** Vary the layer width (channel size) and the max frequency $$ L $$ for the positional encoding.
+<span style="color: red;">**[Impl: Hyperparameter Tuning]**</span> Vary the layer width (channel size) and the max frequency $$ L $$ for the positional encoding.
 
 ![training](/hws/hw4/assets/2D_training.jpg)
 
-**[Deliverables]** As a reference, the above images show the process of optimizing the network to fit on this image.
+<span style="color: darkgreen;">**[Deliverables]**</span> As a reference, the above images show the process of optimizing the network to fit on this image.
 
 - Report your model architecture including number of layers, width, and learning rate. Feel free to add other details you think are important.
 - Show training progression (images at different iterations, similar to the above reference) on both the provided test image and one of your own images.
@@ -291,7 +295,7 @@ $$
 $$ 
 in which $$ \begin{bmatrix} \mathbf{R}_{3\times3} & \mathbf{t} \\ \mathbf{0}_{1\times3} & 1 \end{bmatrix} $$ is called world-to-camera (`w2c`) transformation matrix, or extrinsic matrix. The inverse of it is called camera-to-world (`c2w`) transformation matrix.
 
-**[Impl]** In this session you would need to implement a function `x_w = transform(c2w, x_c)` that transform a point from camera to the world space. You can verify your implementation by checking if the follow statement is always true: `x == transform(c2w.inv(), transform(c2w, x))`. Note you might want your implementation to support batched coordinates for later use. You can implement it with either numpy or torch.
+<span style="color: red;">**[Impl]**</span> In this session you would need to implement a function `x_w = transform(c2w, x_c)` that transform a point from camera to the world space. You can verify your implementation by checking if the follow statement is always true: `x == transform(c2w.inv(), transform(c2w, x))`. Note you might want your implementation to support batched coordinates for later use. You can implement it with either numpy or torch.
 
 **Pixel to Camera Coordinate Conversion.** Consider a pinhole camera with focal length $$ (f_x, f_y) $$ and principal point $$ (o_x = \text{image_width} / 2, o_y = \text{image_height} / 2) $$, its intrinsic matrix $$ \mathbf{K} $$ is defined as: 
 $$
@@ -303,7 +307,7 @@ s \begin{bmatrix} u \\ v \\ 1 \end{bmatrix} = \mathbf{K} \begin{bmatrix} x_c \\ 
 $$ 
 in which $$ s=z_c $$ is the depth of this point along the optical axis.
 
-**[Impl]** In this session you would need to implement a function that invert the aforementioned process, which transform a point from the pixel coordinate system back to the camera coordinate system: `x_c = pixel_to_camera(K, uv, s)`. Similar to the previous session, you might also want your implementation here to support batched coordinates for later use. You can implement it with either numpy or torch.
+<span style="color: red;">**[Impl]**</span> In this session you would need to implement a function that invert the aforementioned process, which transform a point from the pixel coordinate system back to the camera coordinate system: `x_c = pixel_to_camera(K, uv, s)`. Similar to the previous session, you might also want your implementation here to support batched coordinates for later use. You can implement it with either numpy or torch.
 
 **Pixel to Ray.** A ray can be defined by an origin vector $$ \mathbf{r}_o \in \mathbb{R}^3 $$ and a direction vector $$ \mathbf{r}_d \in \mathbb{R}^3 $$. In the case of a pinhole camera, we want to know the $$ \{\mathbf{r}_o, \mathbf{r}_d\} $$ for every pixel $$ (u, v) $$. The origin $$ \mathbf{r}_o $$ of those rays is easy to get because it is just the location of the camera in world coordinates. For a camera-to-world (c2w) transformation matrix $$ \begin{bmatrix} \mathbf{R}_{3\times3} & \mathbf{t} \\ \mathbf{0}_{1\times3} & 1 \end{bmatrix} $$, the camera origin is simply the translation component: 
 $$
@@ -314,15 +318,15 @@ $$
 \mathbf{r}_d = \frac{\mathbf{X_w} - \mathbf{r}_o}{\|\mathbf{X_w} - \mathbf{r}_o\|_2}
 $$
 
-**[Impl]** In this section you will need to implement a function that converts a pixel coordinate to a ray with origin and normalized direction: `ray_o, ray_d = pixel_to_ray(K, c2w, uv)`. You might find your previously implemented functions useful here. Similarly, you might also want your implementation to support batched coordinates.
+<span style="color: red;">**[Impl]**</span> In this section you will need to implement a function that converts a pixel coordinate to a ray with origin and normalized direction: `ray_o, ray_d = pixel_to_ray(K, c2w, uv)`. You might find your previously implemented functions useful here. Similarly, you might also want your implementation to support batched coordinates.
 
 ---
 
 ## Part 2.2: Sampling
 
-**[Impl: Sampling Rays from Images]** In Part 1, we have done random sampling on a single image to get the pixel color and pixel coordinates. Here we can build on top of that, and with the camera intrinsics & extrinsics, we would be able to convert the pixel coordinates into ray origins and directions. Make sure to account for the offset from image coordinate to pixel center (this can be done simply by adding .5 to your UV pixel coordinate grid)! Since we have multiple images now, we have two options of sampling rays. Say we want to sample N rays at every training iteration, option 1 is to first sample M images, and then sample N // M rays from every image. The other option is to flatten all pixels from all images and do a global sampling once to get N rays from all images. You can choose whichever way you do ray sampling.
+<span style="color: red;">**[Impl: Sampling Rays from Images]**</span> In Part 1, we have done random sampling on a single image to get the pixel color and pixel coordinates. Here we can build on top of that, and with the camera intrinsics & extrinsics, we would be able to convert the pixel coordinates into ray origins and directions. Make sure to account for the offset from image coordinate to pixel center (this can be done simply by adding .5 to your UV pixel coordinate grid)! Since we have multiple images now, we have two options of sampling rays. Say we want to sample N rays at every training iteration, option 1 is to first sample M images, and then sample N // M rays from every image. The other option is to flatten all pixels from all images and do a global sampling once to get N rays from all images. You can choose whichever way you do ray sampling.
 
-**[Impl: Sampling Points along Rays.]** After having rays, we also need to discretize each ray into samples that live in the 3D space. The simplest way is to uniformly create some samples along the ray (`t = np.linspace(near, far, n_samples)`). For the lego scene that we have, we can set `near=2.0` and `far=6.0`. The actual 3D coordinates can be acquired by $\mathbf{x} = \mathbf{r}_o + t \mathbf{r}_d$. However this would lead to a fixed set of 3D points, which could potentially lead to overfitting when we train the NeRF later on. On top of this, we want to introduce some small perturbation to the points *only during training*, so that every location along the ray would be touched upon during training. this can be achieved by something like `t = t + (np.random.rand(t.shape) * t_width)` where t is set to be the start of each interval. We recommend to set `n_samples` to 32 or 64 in this assignment.
+<span style="color: red;">**[Impl: Sampling Points along Rays.]**</span> After having rays, we also need to discretize each ray into samples that live in the 3D space. The simplest way is to uniformly create some samples along the ray (`t = np.linspace(near, far, n_samples)`). For the lego scene that we have, we can set `near=2.0` and `far=6.0`. The actual 3D coordinates can be acquired by $\mathbf{x} = \mathbf{r}_o + t \mathbf{r}_d$. However this would lead to a fixed set of 3D points, which could potentially lead to overfitting when we train the NeRF later on. On top of this, we want to introduce some small perturbation to the points *only during training*, so that every location along the ray would be touched upon during training. this can be achieved by something like `t = t + (np.random.rand(t.shape) * t_width)` where t is set to be the start of each interval. We recommend to set `n_samples` to 32 or 64 in this assignment.
 
 ---
 
@@ -433,7 +437,7 @@ while True:
 
 ## Part 2.4: Neural Radiance Field
 
-**[Impl: Network]** After having samples in 3D, we want to use the network to predict the density and color for those samples in 3D. So you would create a MLP that is similar to Part 1, but with three changes:
+<span style="color: red;">**[Impl: Network]**</span> After having samples in 3D, we want to use the network to predict the density and color for those samples in 3D. So you would create a MLP that is similar to Part 1, but with three changes:
 
 - Input is now 3D world coordinates instead of 2D pixel coordinates, along side a 3D vector as the ray direction. And we are going to output not only the color, but also the density for the 3D points. In the radiance field, the color of each point depends on the view direction, so we are going to use the view direction as the condition when we predict colors. Note we use Sigmoid to constrain the output color within range (0, 1), and use ReLU to constrain the output density to be positive. The ray direction also needs to be encoded by positional encoding (PE) but can use less frequency (e.g., L=4) than the cooridnate PE (e.g., L=10).
 - Make the MLP deeper. We are now doing a more challenging task of optimizing a 3D representation instead of 2D. So we need a more powerful network.
@@ -485,9 +489,9 @@ correct = torch.tensor([
 assert torch.allclose(rendered_colors, correct, rtol=1e-4, atol=1e-4)
 ```
 
-**[Impl]** Here you will implement the volume rendering equation for a batch of samples along a ray. This rendered color is what we will compare with our posed images in order to train our network. You would need to implement this part in torch instead of numpy because we need the loss to be able to backpropagate through this part. A hint is that you may find [torch.cumsum](https://pytorch.org/docs/stable/generated/torch.cumsum.html) or [torch.cumprod](https://pytorch.org/docs/stable/generated/torch.cumprod.html) useful here.
+<span style="color: red;">**[Impl]**</span> Here you will implement the volume rendering equation for a batch of samples along a ray. This rendered color is what we will compare with our posed images in order to train our network. You would need to implement this part in torch instead of numpy because we need the loss to be able to backpropagate through this part. A hint is that you may find [torch.cumsum](https://pytorch.org/docs/stable/generated/torch.cumsum.html) or [torch.cumprod](https://pytorch.org/docs/stable/generated/torch.cumprod.html) useful here.
 
-**[Deliverables]** As a reference, the images below show the process of optimizing the network to fit on our lego multi-view images from a novel view. The staff solution reaches above 23 PSNR with 1000 gradient steps and a batchsize of 10K rays per gradent step. The staff solution uses an Adam optimizer with a learning rate of 5e-4. For guaranteed full credit, achieve 23 PSNR for any number of iterations.
+<span style="color: darkgreen;">**[Deliverables]**</span> As a reference, the images below show the process of optimizing the network to fit on our lego multi-view images from a novel view. The staff solution reaches above 23 PSNR with 1000 gradient steps and a batchsize of 10K rays per gradent step. The staff solution uses an Adam optimizer with a learning rate of 5e-4. For guaranteed full credit, achieve 23 PSNR for any number of iterations.
 
 ![training](/hws/hw4/assets/nerf_training.jpg)
 
@@ -509,9 +513,9 @@ assert torch.allclose(rendered_colors, correct, rtol=1e-4, atol=1e-4)
 
 You will now use the dataset you created in part 0 to create a NeRF of your chosen object. After training a NeRF on your dataset render a gif of novel views from your scene. We have provided some starter code below which may be useful.
 
-**[UPDATE 11/14/2025]**
+<!-- **[UPDATE 11/14/2025]**
 
-The calibrated Lafufu Dataset can be found [here](/hws/hw4/assets/lafufu_dataset.npz).
+The calibrated Lafufu Dataset can be found [here](/hws/hw4/assets/lafufu_dataset.npz). -->
 
 ```python
 def look_at_origin(pos):
@@ -567,15 +571,15 @@ Helpful Tips / Common Mistakes:
 - You might want to increase the number of samples along your rays for your real data. This will take longer to train, but can improve visual quality of your NeRF. For our implementation we first trained with 32 samples in order to ensure that there are no issues or bugs in other parts of our code and then increased to 64 samples per ray to get our final result.
 - If training is taking an unreasonable amount of time, your image resolution may be the issue. Attempting to train with too large of images may take a long time. If you resize your images you need to ensure that your intrinsics matrix reflects this change either by resizing before doing calibration or adjusting the intrinsics matrix after recovering it.
 
-**[Impl]** Train a NeRF on your chosen object dataset collected in part 0. Make sure to save the training loss over iterations as well as to generate intermediate renders for the deliverables.
+<span style="color: red;">**[Impl]**</span> Train a NeRF on your chosen object dataset collected in part 0. Make sure to save the training loss over iterations as well as to generate intermediate renders for the deliverables.
 
-**[Deliverables]** Create a gif of a camera circling the object showing novel views and discuss any code or hyperparameter changes you had to make. Include a plot of the training loss as well as some intermediate renders of the scene while it is training.
+<span style="color: darkgreen;">**[Deliverables]**</span> Create a gif of a camera circling the object showing novel views and discuss any code or hyperparameter changes you had to make. Include a plot of the training loss as well as some intermediate renders of the scene while it is training.
 
-![Labubu NeRF](/hws/hw4/assets/labubu_nerf.gif)
+<!-- ![Labubu NeRF](/hws/hw4/assets/labubu_nerf.gif)
 
 ![Labubu Training at 500 iterations](/hws/hw4/assets/labubu_train_500.png) ![Labubu Training at 2000 iterations](/hws/hw4/assets/labubu_train_2000.png) ![Labubu Training at 6000 iterations](/hws/hw4/assets/labubu_train_6000.png)
 
-![Labubu Training Loss Statistics](/hws/hw4/assets/labubu_stats.png)
+![Labubu Training Loss Statistics](/hws/hw4/assets/labubu_stats.png) -->
 
 ---
 
